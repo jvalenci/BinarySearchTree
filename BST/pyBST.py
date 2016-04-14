@@ -127,10 +127,22 @@ def inorder(T,f):
 # that starts "if __name__ == '__main__'"
 
 def preorder(T,f):
-    pass
+	if not is_bst(T):
+		return
+	if not T:
+		return
+	f(T[0])
+	preorder(T[1],f)
+	preorder(T[2],f)
 
 def postorder(T,f):
-    pass
+    if not is_bst(T):
+        return
+    if not T:
+        return
+    postorder(T[1],f)
+    postorder(T[2],f)
+    f(T[0])
 
 def tree_height(T):
     pass
@@ -146,18 +158,28 @@ if __name__ == '__main__':
     
     for x in ['Joe','Bob', 'Phil', 'Paul', 'Marc', 'Jean', 'Jerry', 'Alice', 'Anne']:
         bst_insert(K,x)
-    print
-    print('\nTree elements in sorted order\n')
+    print('-' * 50)
+    print("\nTree elements in sorted order\n")
     inorder(K,print_func_space)
     print()
+    print('-' * 50)
+    print("\nTree elements in preorder\n")
+    preorder(K,print_func_space)
+    print()
+    print('-' * 50)
+    print("\nTree elements in post order\n")
+    postorder(K,print_func_space)
+    print()
+    print('-' * 50)
+
     print('\nPrint full tree\n')
     print_bintree(K)
     print("\nDelete Bob and print tree\n")
     bst_delete(K,'Bob')
     print_bintree(K)
-    print()
+    print('-' * 50)
     print("\nPrint subtree at 'Phil'\n")
     print_bintree(bst_search(K,'Phil'))
-    print()
+    print('-' * 50)
     # YOUR TEST CODE GOES BELOW
 
