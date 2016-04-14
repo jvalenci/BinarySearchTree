@@ -148,11 +148,11 @@ def tree_height(T):
     if T == []:
         return 0
 
-    if not is_bst(T):
-        return
+    #if not is_bst(T):
+    #    return 0
 
     if not T:
-        return
+        return 0
 
     leftside = 1 + tree_height(T[1])
     rightside = 1 + tree_height(T[2])
@@ -164,14 +164,23 @@ def balance(T):
     # minus the height of the right subtree of T
     leftside = 1 + tree_height(T[1])
     rightside = 1 + tree_height(T[2])
-    balance = abs(leftside - rightside)
-    if balance > 1:
-        F = []
-        for x in T:
-            if x not []:
-                bst_insert(F,x)
+    while abs(leftside - rightside) > 1:
+        if leftside > rightside:
+            val = bst_max(T[1])
+            bst_delete(T[1],val)
+            temp = T[0]
+            T[0] = val 
+            bst_insert(T,temp)
+            leftside -= 1
+        else:
+            val = bst_min(T[2])
+            bst_delete(T[2],val)
+            temp = T[0]
+            T[0] = val
+            bst_insert(T,temp)
+            rightside -= 1
 
-    return F
+    return T
 
 # Modify the code below to test the above four functions    
 if __name__ == '__main__':
@@ -214,16 +223,20 @@ if __name__ == '__main__':
     print("\nTree height with original list\n")
     print(tree_height(K))
     print()
-    print("\nTree height with 'Aundraah' and 'Alex' added to original list\n")
-    bst_insert(K,'Andraah')
-    bst_insert(K,'Anderson')
+    print("\nTree height with 'Aundraah' and 'Anderson' added to original list\n")
+    bst_insert(K,'Mqdraah')
+    bst_insert(K,'Mqderson')
+    bst_insert(K,'Mqdersan')
+    bst_insert(K,'Mqdersonh')
+    bst_insert(K,'Mqdersonm')
+    bst_insert(K,'Mqderson')
     print_bintree(K)
     print()
     print('Tree height is ' + str(tree_height(K)))
     print()
     print('-' * 50)
     print('Testing balance()')
-    print("\nBalancing after 'Aundraah' and 'Alex' added to original list\n")
+    print("\nBalancing after adding more names to original list\n")
     print_bintree(balance(K))
     print()
     print('-' * 50)
