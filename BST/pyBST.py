@@ -145,12 +145,33 @@ def postorder(T,f):
     f(T[0])
 
 def tree_height(T):
-    pass
+    if T == []:
+        return 0
+
+    if not is_bst(T):
+        return
+
+    if not T:
+        return
+
+    leftside = 1 + tree_height(T[1])
+    rightside = 1 + tree_height(T[2])
+
+    return (rightside if leftside < rightside else leftside)
 
 def balance(T):
     # returns the height of the left subtree of T
     # minus the height of the right subtree of T
-    pass
+    leftside = 1 + tree_height(T[1])
+    rightside = 1 + tree_height(T[2])
+    balance = abs(leftside - rightside)
+    if balance > 1:
+        F = []
+        for x in T:
+            if x not []:
+                bst_insert(F,x)
+
+    return F
 
 # Modify the code below to test the above four functions    
 if __name__ == '__main__':
@@ -163,15 +184,6 @@ if __name__ == '__main__':
     inorder(K,print_func_space)
     print()
     print('-' * 50)
-    print("\nTree elements in preorder\n")
-    preorder(K,print_func_space)
-    print()
-    print('-' * 50)
-    print("\nTree elements in post order\n")
-    postorder(K,print_func_space)
-    print()
-    print('-' * 50)
-
     print('\nPrint full tree\n')
     print_bintree(K)
     print("\nDelete Bob and print tree\n")
@@ -181,5 +193,37 @@ if __name__ == '__main__':
     print("\nPrint subtree at 'Phil'\n")
     print_bintree(bst_search(K,'Phil'))
     print('-' * 50)
-    # YOUR TEST CODE GOES BELOW
-
+    # YOUR TEST CODE GOES BELOW reset list for test
+    
+    K = []
+    
+    for x in ['Joe','Bob', 'Phil', 'Paul', 'Marc', 'Jean', 'Jerry', 'Alice', 'Anne']:
+        bst_insert(K,x)
+    
+    print('Testing preorder()')
+    print("\nTree elements in preorder\n")
+    preorder(K,print_func_space)
+    print()
+    print('-' * 50)
+    print('Testing postorder()')
+    print("\nTree elements in post order\n")
+    postorder(K,print_func_space)
+    print()
+    print('-' * 50)
+    print('Testing treeheight()')
+    print("\nTree height with original list\n")
+    print(tree_height(K))
+    print()
+    print("\nTree height with 'Aundraah' and 'Alex' added to original list\n")
+    bst_insert(K,'Andraah')
+    bst_insert(K,'Anderson')
+    print_bintree(K)
+    print()
+    print('Tree height is ' + str(tree_height(K)))
+    print()
+    print('-' * 50)
+    print('Testing balance()')
+    print("\nBalancing after 'Aundraah' and 'Alex' added to original list\n")
+    print_bintree(balance(K))
+    print()
+    print('-' * 50)
