@@ -148,38 +148,31 @@ def tree_height(T):
     if T == []:
         return 0
 
-    #if not is_bst(T):
-    #    return 0
-
     if not T:
         return 0
 
-    leftside = 1 + tree_height(T[1])
-    rightside = 1 + tree_height(T[2])
-
-    return (rightside if leftside < rightside else leftside)
+    return (max(1 + tree_height(T[1]), 1 + tree_height(T[2])))
 
 def balance(T):
     # returns the height of the left subtree of T
     # minus the height of the right subtree of T
-    leftside = 1 + tree_height(T[1])
-    rightside = 1 + tree_height(T[2])
-    while abs(leftside - rightside) > 1:
-        if leftside > rightside:
+    
+    if abs(tree_height(T[1]) -  tree_height(T[2])) > 1:
+        if tree_height(T[1]) > tree_height(T[2]):
             val = bst_max(T[1])
             bst_delete(T[1],val)
             temp = T[0]
             T[0] = val 
             bst_insert(T,temp)
-            leftside -= 1
+            
         else:
             val = bst_min(T[2])
             bst_delete(T[2],val)
             temp = T[0]
             T[0] = val
             bst_insert(T,temp)
-            rightside -= 1
-
+            
+        balance(T)
     return T
 
 # Modify the code below to test the above four functions    
@@ -223,7 +216,7 @@ if __name__ == '__main__':
     print("\nTree height with original list\n")
     print(tree_height(K))
     print()
-    print("\nTree height with 'Aundraah' and 'Anderson' added to original list\n")
+    print("\nTree height with names added to original list\n")
     bst_insert(K,'Mqdraah')
     bst_insert(K,'Mqderson')
     bst_insert(K,'Mqdersan')
