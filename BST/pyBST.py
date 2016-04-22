@@ -105,13 +105,21 @@ def bst_delete(T,x):
 def print_func_space(x):
     print(x,end=' ')
 
-def print_bintree(T,level=0):
+def indented_line(level=0,side=0):
+    if level == 0:
+        return ''
+    return '-'*(5*level-4)+side+'-'*4
+
+def print_bintree(T,level=0,side=''):
     if T == []:
-        print('-'*3*level+'|')
+        if level == 0:
+            print("NULL")
+        else:
+            print(indented_line(level,side) + 'NULL')
     else:
-        print('-'*3*level + str(T[0]))
-        print_bintree(T[1],level+1)
-        print_bintree(T[2],level+1)
+        print(indented_line(level,side) + str(T[0]))
+        print_bintree(T[1],level+1,'L')
+        print_bintree(T[2],level+1,'R')
 
 def inorder(T,f):
     if not is_bst(T):
@@ -128,52 +136,35 @@ def inorder(T,f):
 
 def preorder(T,f):
 	if not is_bst(T):
-		return
+		return ''
 	if not T:
-		return
+		return ''
 	f(T[0])
 	preorder(T[1],f)
 	preorder(T[2],f)
 
 def postorder(T,f):
     if not is_bst(T):
-        return
+        return ''
     if not T:
-        return
+        return ''
     postorder(T[1],f)
     postorder(T[2],f)
     f(T[0])
 
 def tree_height(T):
-    if T == []:
-        return 0
+    #here we count the edges to a leaf node
+    if T == [] or not T:
+        return -1
 
-    if not T:
-        return 0
-
-    return (max(1 + tree_height(T[1]), 1 + tree_height(T[2])))
+    return (max(tree_height(T[1]), tree_height(T[2])) + 1)
 
 def balance(T):
     # returns the height of the left subtree of T
     # minus the height of the right subtree of T
-    
-    if abs(tree_height(T[1]) -  tree_height(T[2])) > 1:
-        if tree_height(T[1]) > tree_height(T[2]):
-            val = bst_max(T[1])
-            bst_delete(T[1],val)
-            temp = T[0]
-            T[0] = val 
-            bst_insert(T,temp)
-            
-        else:
-            val = bst_min(T[2])
-            bst_delete(T[2],val)
-            temp = T[0]
-            T[0] = val
-            bst_insert(T,temp)
-            
-        balance(T)
-    return T
+    if not T:
+	    return
+    return (tree_height(T[1]) - tree_height(T[2]))
 
 # Modify the code below to test the above four functions    
 if __name__ == '__main__':
@@ -215,6 +206,8 @@ if __name__ == '__main__':
     print('Testing treeheight()')
     print("\nTree height with original list\n")
     print(tree_height(K))
+    print('\nTesting balance() with original list\n')
+    print(balance(K))
     print()
     print("\nTree height with names added to original list\n")
     bst_insert(K,'Mqdraah')
@@ -230,6 +223,13 @@ if __name__ == '__main__':
     print('-' * 50)
     print('Testing balance()')
     print("\nBalancing after adding more names to original list\n")
-    print_bintree(balance(K))
+    print(balance(K))
     print()
+    print('-' * 50)
+    print('Testing with a Null tree')
+    nTree = []
+    print('Balance: ' + str(balance(nTree)))
+    print('Tree height: ' + str(tree_height(nTree)))
+    print('preorder: ' + preorder(K,print_func_space))
+    print('postorder: ' + preorder(K,print_func_space))
     print('-' * 50)
